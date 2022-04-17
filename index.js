@@ -34,6 +34,17 @@ class Transaction {
   }
 }
 
+class Withdrawal extends Transaction {
+  get value() {
+    return -this.amount;
+  }
+
+  isAllowed() {
+    // note how it has access to this.account b/c of parent
+    return this.account.balance - this.amount >= 0;
+  }
+}
+
 class Deposit extends Transaction {
   get value() {
     return this.amount;
@@ -45,16 +56,6 @@ class Deposit extends Transaction {
   }
 }
 
-class Withdrawal extends Transaction {
-  get value() {
-    return -this.amount;
-  }
-
-  isAllowed() {
-    // note how it has access to this.account b/c of parent
-    return this.account.balance - this.amount >= 0;
-  }
-}
 // DRIVER CODE BELOW
 // We use the code below to "drive" the application logic above and make sure it's working as expected
 
@@ -62,18 +63,18 @@ const myAccount = new Account("billybob");
 
 console.log("Starting Balance:", myAccount.balance);
 
-const t1 = new Deposit(200.0, myAccount);
+const t1 = new Deposit(500.0, myAccount);
 t1.commit();
 
-const t2 = new Withdrawal(400.0, myAccount);
+const t2 = new Withdrawal(1500.0, myAccount);
 t2.commit();
 
-const t3 = new Deposit(300.0, myAccount);
+const t3 = new Deposit(100, myAccount);
 t3.commit();
 
 const t4 = new Withdrawal(100, myAccount);
 t4.commit();
 
 console.log("Ending Balance:", myAccount.balance);
-
-console.log("Account Transaction History: ", myAccount.transactions);
+console.log("Lookings like I'm broke again");
+// console.log("Account Transaction History: ", myAccount.transactions);
