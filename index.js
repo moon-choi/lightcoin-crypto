@@ -25,10 +25,12 @@ class Transaction {
     this.account = account;
   }
   commit() {
+    if (!this.isAllowed()) return false;
     // Keep track of the time of the transaction
     this.time = new Date();
     // Add the transaction to the account
     this.account.addTransaction(this); //transaction 전체를 기록함 (amount, account, time, transaction type)
+    return true;
   }
 }
 
